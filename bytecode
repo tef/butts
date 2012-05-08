@@ -1,0 +1,24 @@
+bytecode format
+
+constant stack
+
+0: 1
+1: "fooooo"
+
+
+
+think:
+
+dalvik
+register based?
+crazy shit like call inlining
+
+
+simplest thing that works?
+
+nothing!
+
+jython?
+
+
+

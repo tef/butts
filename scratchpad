@@ -1,0 +1,476 @@
+whatever
+
+
+foo.?object - elvis operator or 
+
+
+write core-form sexpr, then bytecode?
+
+i.e letrec, 
+
+
+basically: parse tree -> sexpr tree -> bytecode
+
+how should compiled code look?
+
+x = 1
+
+def foo():
+	return x
+	
+print x
+
+
+basically, serialization and linking options
+
+name resolution
+
+		single pass? or pythons resolve as you go
+		
+
+
+byte module format != bytecode.
+
+old ideas:
+
+scratch:
+ 	roles nice idea for combination building or composing protoypes?
+    units 
+
+
+    interfaces with test specifications
+
+    foo(x)
+
+    int __add__(x int) where x+y==y+x forall x,y in any_int
+
+
+   	requirements:
+   		import is used for a direct library dependance.
+   		
+   		require is more: give me something that does this, anything
+   		
+
+    import should take an address not a dot string.
+    or can take a string instead? dot string is special
+    import:foo.bar.baz
+
+    url syntax?
+
+    import url"...."
+
+    implicitly uses the package name ? 
+
+    yiiiiikes.
+   	
+   	operator overloading:
+   	
+   	
+   	
+   	features:
+
+        user defined literals/operators
+
+        like a module, exports __features__
+   	
+   		
+   	
+   	
+   	symbols:
+   		like enums, not atoms. not in a global namespace
+   		must be imported to be used, essentially namespace
+   		singletons? def a,b,c,d,e,f,g 
+  
+   	
+   	services?
+   	
+   	
+     
+     
+     
+     
+     behaviours: 
+     
+     	idea
+     	
+     	combine interfaces, tests and docs into a unit
+     	
+     	it describes the behaviour of an object
+     	
+     	composed of 
+     	
+     	method signatures
+     	docstrings
+     	typestates
+
+
+
+structured programming
+
+	attempt to build not simplified versions of things
+	but also ways to compose programs
+	
+	say  
+	 
+	boxes with specific connectionsdd
+	
+	
+    starts with control flow of programs:
+        if then, etc
+
+    functional programming: strategy pattern, passing behaviours to functions
+
+    oo - attaching behaviour to data 
+
+    actors - modelling state
+
+    modules - creating libraries
+
+    otp - creating applications
+        supervision
+    unix/plan9 
+        init/cron/at/mail/
+
+	
+     
+     
+     	
+decisions:
+	* how should iteration work?
+	should it use exceptions? or option types or something else?
+	
+	c: option types with a case statement.
+	rather than exceptions with a try, or goal dir with an if.
+	
+	* should exceptions be used for anything other than errors
+	c: no. exceptions are exits that are abnormal 
+	 
+	* should signals use an inbox model
+	c: no, signals are interruptions that terminate the current process
+	   non priority signals can be sent to an explicit pipe?
+
+	* partial application?
+	
+	
+	* use := vs =
+	c: yes so you don't implictly define things by accident
+	   no because it makes tuple unpacking hard, how do you do
+	   x,y,z = 1,2,3 when y is already bound? 
+	   
+	   
+	   
+	sentinels in meta object methods for return by exception throwing?
+		use None for fail, (val,) for success on iterators
+	
+	destructuring in pattern matching?
+		howto do a match statement to disambiguate between (val,) and ()
+	
+	
+	guard clauses?
+		in match statements?
+		
+	csp vs actors?
+		go vs erlang
+		
+		difference: erlang is named processes and async, go is sync and channel based.
+		
+	developer pipeline? tests.
+	
+	repl workflow of programming. run/test/edit cycle. deploy/upgrade.
+	
+	
+	
+	application: set of things that export a service? i.e like plan9's filesystem
+	
+	process/child process.  woop
+	
+	
+	plugins/containers? osgi hurr. oh god I am becoming enterprise.
+	
+	frameworks good to some extent. cron good. at good.
+
+	large scale structured programming - about small programs and loose interconnects
+	
+	reinvent unix :D :D
+
+scratch:
+	thing is, x = foo[1] if ....
+	
+	hmm
+	
+	x = foo.get(1)
+	foo.get(1) match [
+		(.[1]) : {|x| .......},
+		() : {|x| .....}
+	]
+	
+	(get 1)
+
+	
+	
+	
+	need a destructuring matching statement
+	
+	catching specific types of exceptions seems a bit ugh because
+	of the implicit hiding. 
+		
+	partial application for infix methods? or special methods?
+		partial application using partial(x, [args]) ==> f.__call__.__apply__(args)
+		
+		or foo.curry(a=1,b=2) or yadda yadda yadda x = foo(1,...) 
+		
+	inboxes + channels?
+		should we use inboxes as a default on top of channels
+		
+		
+	inboxes are only useful in erlang for multiplexing and forcing
+	event handling
+	
+	exceptions are for non-local exits, to mark the abnormal exit of a program.
+	exceptions are *abnormal*, not just different, but weird. 
+	
+	so, when you reach the end of a list, it is a special case but it isn't an abnormal
+	case, so list iterators use () and (val) to mark their return value.
+	
+	we need another method of event handling. something which happens during a process
+	which may or not affect its running.
+	
+	theory:
+	set up event handlers in global scope, i.e let %foo = ....
+	
+	event happens, event handler is consulted and it can either return nothing (continue normally)
+	or throw an exception.
+	
+	
+currently
+
+	exceptions are to mark abnormal exits with errors, like trying
+	to read past the end of a list.
+	
+	things that may or may not return a value should return an option type
+	rather than throwing an exception
+	
+	as these exceptions propagate, you could accidentally hide a real error
+	this is bad.
+	
+	also, exception handling is clunky and should be avoided.
+	
+	let's use option types instead with a case statement
+	
+	
+currently we have 
+
+switch value [value:function; value:function]
+
+roughly dict = [..] dict[x](x)
+
+and 
+
+match value [function:function; function:function]
+
+this is for 
+ (<3) -> .... or (>4) .....
+ 
+ 
+but we also need a destructruing case statement for the union values
+explicit or implicit
+
+i.e 
+
+
+case foo.get(1) [
+	(value)
+	(isNone) 
+]
+
+or
+
+unify foo.get(1) [
+	()  : {
+	(x) : {
+]
+
+(heh! heh!)
+
+
+foo[x] --> foo.[x] --> foo.__getitem__(x)
+so
+
+(.[0]) : {|x| ....}
+
+
+or pattern operators
+
+isa(x,)((1,))
+maybe
+
+
+need some way of deconstructing into first argument
+
+patterns? 
+
+well
+
+say you did struct 
+
+struct foo(x,a,b)
+
+x = foo(1,2,3)
+foo(a,b,c) = x
+
+
+
+thoughts:
+
+functions should be able to parse their arguments :v
+
+basic deconstruction in args
+
+
+steal some haklog syntax
+
+say
+
+x y is x(y) 
+
+print 1,2,3; print cocks etc
+foo x,y,z :- foo a,foo(c),d,e  etc.
+
+
+(haklog: dropped homoiconity, dropped immutable (maybe make tuples linked lists/cheap head tail
+dropped goal dir (too confusing), dropped unification/logic variables (again, too confusing)) 
+
+want dcgs though. some way to specify a pattern or a grammar/recognizer? constraints?
+	
+	
+
+type dispatch on functions?
+
+
+
+	
+
+mvp:
+
+	something that is reasonably fast (i.e as fast as prolog or ruby)
+	no code optimizations
+	extensible syntax used in prelude
+	string/list/
+	ffi ?
+	
+	ie c lib ffi bytecode
+make it better for scraping :(
+
+heh
+
+@bless .......
+
+@trait {instance data}
+
+@observer { _.write(x) :- {.....}, _.throw{...}
+
+anonymous iterators? (yield) anonymous observers? (.send()/.throw())
+
+anonymoys processes 
+
+but basically, anonymous channels
+
+
+
+
+xml node
+
+say object with attributes-a dict, and children, a list.
+
+make dicts expose atrributes, list exports children
+
+so x.foo.bar[0 = 1]
+
+yiiikes 
+is string matching :D
+
+well, data aggregation, grab this shit, spit it out like this.
+
+for protocol mapping
+
+
+add xpath, xml literals :3
+
+
+need apis out of the box s
+
+
+
+
+
+package foo
+
+feature foo {
+
+rule "expr" 
+
+infix x
+prefix y
+postfix y
+distfix []
+literal foo"..."
+literal foo bar baz
+uri foo://
+
+template foo op foobar {
+	f(foo,foobar)
+}
+
+template if cond &then else &else {
+	.....
+
+}
+
+
+__feature__ == [foo]
+
+
+
+
+ffffffff, anyway
+
+
+thoughts;
+		traits as implicit contracts 
+		contracts can apply to multiple objects
+		i.e a contract on one object is essentially a type/behaviour
+		
+		why aren't some properties, well, attributes
+		i.e foo.len or foo.__int__ or foo.__str__
+		idea: don't penalize  
+		hmm. actually .to_s is the cast, foo.__str__ is the property
+		
+		i.e 
+		
+		i.e, in python there is no .__str__ is an implict cast
+		if used, .to_str is an explicit cast
+
+		trait based multimethods?
+		
+		
+		
+		haha 
+		
+		multicall
+		
+		x = muticall (.foo) a,b
+		
+		means sort args= [a,b] then call args[0](args[1:])
+		
+		
+		mutlimethods:
+		something like (a,b).*collide()
+		
+		@multimethod def __add__((a,b)) {.....}
+		
+		generalize __radd__ ?s
+		
+enums/singletons/symbols
+
+
+     

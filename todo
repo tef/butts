@@ -1,0 +1,73 @@
+inbox:
+		add parser
+		parser creates 1 + 2 + 3
+		
+		
+		write test framework in python?
+		
+		name resolution
+
+
+
+
+
+deffered:
+
+spec:
+	work on trait syntax: requires foo(1,2,3),foo,bar
+	work on magic syntax: prelude itself
+	
+code:
+	write parser with numbers and addition
+	export __native__, create __builtins__
+	add function calls, enough for prelude
+	put addition into prelude
+	write prelude in java.
+	
+	move onto working towards function definition
+
+general bits:
+
+builtins:
+	add more builtin method names
+	
+objects:
+	implement more data protocol
+
+vm:
+	flesh out opcodes
+		including exception handling?
+		
+translator:		
+	add assignment, blocks, flow control operators
+	
+	
+next:	
+	add functions, add main hooks
+	add modules
+	add import, import hooks
+	add spawn, add channels
+	add iterators
+	add map, filter, etc.
+	add pipe
+	add versioning/import hooks
+		
+	add parser 
+	
+	
+bugs
+	check function arguments for validity
+
+
+
+done:
+
+added lists, tuples
+cleaned up docs, added 
+
+
+fixed bugs:
+
+thought method return self was enough rather than delegate return self
+cyclic boostrap problems, and leaving out slot table calls when adding new builtins.
+
